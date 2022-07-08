@@ -15,6 +15,7 @@ def generate_summary(output_file):
 			with open(f, "r") as file:
 				first_line = file.readline()
 				file_object.write(first_line)
+				print("Include Last Run of [" + os.path.splitext(filename)[0] + "] (" + f + ")")
 
 	file_object.close()
 	print("Glue Jobs summary file of last runs written in ["+ output_file +"]")
