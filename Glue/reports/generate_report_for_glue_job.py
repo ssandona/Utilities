@@ -27,11 +27,11 @@ def extract_cloudwatch_autoscaling_info(job, job_info):
 
 	if job_info["Autoscaling"] == "false":
 
-		p0 = job_info["MaxCapacity"]
-		p25 = job_info["MaxCapacity"]
-		p50 = job_info["MaxCapacity"]
-		p75 = job_info["MaxCapacity"]
-		p100 = job_info["MaxCapacity"]
+		p0 = job_info["MaxNumberOfWorkers"]
+		p25 = job_info["MaxNumberOfWorkers"]
+		p50 = job_info["MaxNumberOfWorkers"]
+		p75 = job_info["MaxNumberOfWorkers"]
+		p100 = job_info["MaxNumberOfWorkers"]
 
 		print("\tnumberAllExecutors_p0 [" + str(p0) + "]")
 		job_info["numberAllExecutors_p0"] =  p0
@@ -200,6 +200,13 @@ def extract_info(jobs):
 
 				print("\tMaxCapacity [" + str(job["MaxCapacity"]) + "]")
 				job_info["MaxCapacity"] = job["MaxCapacity"]
+
+				if 'NumberOfWorkers' in job:
+					print("\tMaxNumberOfWorkers [" + str(float(job["NumberOfWorkers"])) + "]")
+					job_info["MaxNumberOfWorkers"] = float(job["NumberOfWorkers"])
+				else:
+					print("\tMaxNumberOfWorkers [" + str(job["MaxCapacity"]) + "]")
+					job_info["MaxNumberOfWorkers"] = job["MaxCapacity"]
 
 				print("\tExecutionTime [" + str(job["ExecutionTime"]) + "]")
 				job_info["ExecutionTime"] = job["ExecutionTime"]
