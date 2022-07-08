@@ -1,5 +1,18 @@
 # This repo contains a set of utilities tools to generate reports out of Glue Job executions
 
+Please note the following python packages are needed:
+- json
+- numpy
+- boto3
+
+If not installed, you can install them with:
+
+```
+pip3 install boto3
+pip3 install json
+pip3 install numpy
+```
+
 ## Generate a File with the list of Glue Job Names
 
 You can use the **generate_list_of_jobs.py** script to create a text file containing the list of Glue Job Names in a specific region for the current account.
@@ -12,13 +25,6 @@ python3 generate_list_of_jobs.py --region REGION
 
 The script generates by default the output file **job_list.txt** in the same location where the script resides. The file contains one Job Name per line.
 You can customize the file output location by specifying the **--output-file FILENAME** parameter.
-
-Please note the **json** python package is used in the script.
-If not installed, you can install it with
-
-```
-pip3 install json
-```
 
 ## Generate for a specified Job Name a JSON file containing details about the related SUCCESSFULL Runs
 
@@ -33,14 +39,6 @@ python3 generate_report_for_glue_job.py --job-name JOB_NAME --region REGION --jo
 The **--job-runs** parameter identifies the number of last job runs to consider. If not specified, the last 10 successful runs will be included.
 
 The script generates the output file in **reports/<job_name>.json**. 
-
-Please note the **json** python package and the **numpy** python package are used on the script.
-If not installed, you can install them with
-
-```
-pip3 install json
-pip3 install numpy
-```
 
 ## Given a list of Glue Job Names generate for each a JSON file containing details about the related SUCCESSFULL Runs
 
