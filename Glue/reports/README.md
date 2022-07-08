@@ -4,6 +4,8 @@ This repo contains a set of utilities tools to generate reports out of Glue Job 
 
 ## Prerequisites
 
+### Software
+
 Python3 is needed to run the included utilities.
 
 The following Python packages are needed:
@@ -18,6 +20,11 @@ pip3 install boto3
 pip3 install json
 pip3 install numpy
 ```
+
+### Permissions
+
+The AWS principal used to run these scripts (i.e., your IAM user) needs grants to retrieve metrics in CloudWatch and to retrieve Glue job details.
+
 
 ## Generate a File with the list of Glue Job Names
 
