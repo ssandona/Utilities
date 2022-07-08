@@ -98,8 +98,13 @@ def extract_cloudwatch_autoscaling_info(job, job_info):
 		# Add / Append an element at the end of a numpy array
 		datapoints=numberAllExecutors["Datapoints"]
 
+		#print(datapoints)
+
 		for datapoint in datapoints:
 			metrics = np.append(metrics, datapoint["Maximum"])
+
+		if len(datapoints) == 0:
+			print("Empty list")
 
 		p0 = np.percentile(metrics, 0)
 		p25 = np.percentile(metrics, 25)
@@ -229,7 +234,9 @@ def extract_info(jobs):
 
 				print("\tCompletedOn [" + job["CompletedOn"].strftime("%Y%m%d-%H:%M:%S") + "]")
 				job_info["CompletedOn"] = job["CompletedOn"].strftime("%Y%m%d-%H:%M:%S")
-	
+
+
+				'''
 				if 'Arguments' in job:
 					arg=job['Arguments']
 					if '--enable-auto-scaling' in arg:
@@ -238,6 +245,14 @@ def extract_info(jobs):
 					else:
 						print("\tAutoscaling [false]")
 						job_info["Autoscaling"]="false"
+				else:
+					print("\tAutoscaling [false]")
+					job_info["Autoscaling"]="false"
+				'''
+
+				if 'DPUSeconds' in job:
+					print("\tAutoscaling [true]")
+					job_info["Autoscaling"]="true"
 				else:
 					print("\tAutoscaling [false]")
 					job_info["Autoscaling"]="false"
