@@ -46,8 +46,7 @@ Stdout:
 Retrieving Glue jobs ...
 =========
 test-job-1
-abcd-weekly-processing-job
-marketing-daily-job
+test-job-2
 =========
 List of Glue jobs written in [job_list.txt]
 ```
@@ -78,7 +77,7 @@ For Glue jobs configured with autoscaling the number configured as "Maximum numb
 - **glue.driver.ExecutorAllocationManager.executors.numberAllExecutors** : The number of actively running job executors.
 - **glue.driver.ExecutorAllocationManager.executors.numberMaxNeededExecutors** : The number of maximum (actively running and pending) job executors needed to satisfy the current load.
 
-The first metric highlights the number of Executors allocated at a specific point in time and so reflect the actual resources utilization. The second metric highlights the number of Executors need estimated at a specific point in time and can be useful to evalaute the value we selected for "Maximum number of workers" (See more info in <a href="https://docs.aws.amazon.com/glue/latest/dg/monitoring-awsglue-with-cloudwatch-metrics.html" target="_blank">Monitoring AWS Glue Using Amazon CloudWatch Metrics</a> and <a href="https://docs.aws.amazon.com/glue/latest/dg/monitor-debug-capacity.html" target="_blank">Monitoring for DPU Capacity Planning</a>.
+The first metric highlights the number of Executors allocated at a specific point in time and so reflect the actual resources utilization. The second metric highlights the number of Executors need estimated at a specific point in time and can be useful to evaluate the value we selected for "Maximum number of workers" (See more info in <a href="https://docs.aws.amazon.com/glue/latest/dg/monitoring-awsglue-with-cloudwatch-metrics.html" target="_blank">Monitoring AWS Glue Using Amazon CloudWatch Metrics</a> and <a href="https://docs.aws.amazon.com/glue/latest/dg/monitor-debug-capacity.html" target="_blank">Monitoring for DPU Capacity Planning</a>.
 
 On the script for each Job Run configured with autoscaling we collect from CloudWatch values of the 2 metrics every 5 minutes for the entire duration of the execution. We then compure the p0, p25, p50, p75 and p100 percentiles for those as a summary. For each Job Run configured without autoscaling we setup the percentiles values for those 2 metrics with the value of "Requested number of workers".
 
@@ -157,9 +156,9 @@ Output file **reports/test-job-1.json**:
 This JSON file can be imported in QuickSight in order to see how our last **NUM_RUNS** Glue Job Executions performed over time.
 
 
-## Given a list of Glue Job Names generate for each a JSON file containing details about the related SUCCESSFULL Runs
+## Given a list of Glue Job Names generate for each one a JSON file containing details about the related SUCCESSFULL Runs
 
-You can use the **batch_generate_reports_for_glue_jobs.py** script to obtain the same results as the **generate_report_for_glue_job.py** script but for all the jobs specified on an input file.
+You can use the **batch_generate_reports_for_glue_jobs.py** script to obtain the same results as the **generate_report_for_glue_job.py** script but for all the jobs specified inside an input file.
 
 The input file used by default is **job_list.txt** in the same location where the script resides (i.e., output of **generate_list_of_jobs.py**).
 
@@ -338,5 +337,8 @@ Output file **reports/test-job-1.json**:
 ```
 {"Id": "jr_YYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYY", "JobName": "test-job-1", "MaxCapacity": 6.0, "MaxNumberOfWorkers": 3.0, "ExecutionTime": 145, "Attempt": 0, "WorkerType": "G.2X", "JobRunState": "SUCCEEDED", "StartedOn": "20220706-14:55:14", "CompletedOn": "20220706-14:57:52", "Autoscaling": "true", "numberAllExecutors_p0": 2.0, "numberAllExecutors_p25": 2.0, "numberAllExecutors_p50": 2.0, "numberAllExecutors_p75": 2.0, "numberAllExecutors_p100": 2.0, "numberMaxNeededExecutors_p0": 1.0, "numberMaxNeededExecutors_p25": 1.0, "numberMaxNeededExecutors_p50": 1.0, "numberMaxNeededExecutors_p75": 1.0, "numberMaxNeededExecutors_p100": 1.0}
 {"Id": "jr_KKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKK", "JobName": "test-job-2", "MaxCapacity": 2.0, "MaxNumberOfWorkers": 2.0, "ExecutionTime": 46, "Attempt": 0, "WorkerType": "G.1X", "JobRunState": "SUCCEEDED", "StartedOn": "20220428-11:55:53", "CompletedOn": "20220428-11:56:45", "Autoscaling": "false", "numberAllExecutors_p0": 2.0, "numberAllExecutors_p25": 2.0, "numberAllExecutors_p50": 2.0, "numberAllExecutors_p75": 2.0, "numberAllExecutors_p100": 2.0, "numberMaxNeededExecutors_p0": 2.0, "numberMaxNeededExecutors_p25": 2.0, "numberMaxNeededExecutors_p50": 2.0, "numberMaxNeededExecutors_p75": 2.0, "numberMaxNeededExecutors_p100": 2.0}
-
 ```
+
+This JSON file can be imported in QuickSight in order to understand (according to our last job runs) which are our biggest jobs (i.e., order them by **ExecutionTime**, order them by **numberAllExecutors_p75** or by a combination of the 2).
+
+
